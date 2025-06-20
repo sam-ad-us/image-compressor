@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FileMagic - Convert & Compress Files Online</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3f37c9;
+            --accent: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --error: #f72585;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #4a6bff 0%, #6dd5ed 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 5rem 0 3rem;
+            background: linear-gradient(120deg, #4a6bff 0%, #6dd5ed 100%);
+            color: white;
+            border-radius: 0 0 2rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: #fff;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            color: #e0e7ff;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+        }
+        
+        .hero .cta-btn {
+            background: linear-gradient(90deg, #4a6bff 0%, #6dd5ed 100%);
+            color: #fff;
+            padding: 1rem 2.5rem;
+            border-radius: 2rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: none;
+            box-shadow: 0 4px 24px rgba(74,107,255,0.15);
+            transition: background 0.3s, transform 0.2s;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+        
+        .hero .cta-btn:hover {
+            background: linear-gradient(90deg, #6dd5ed 0%, #4a6bff 100%);
+            transform: translateY(-2px) scale(1.04);
+        }
+        
+        /* Tools Section */
+        .tools-section {
+            padding: 3rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+        }
+        
+        .tool-card {
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(74,107,255,0.07);
+            transition: transform 0.25s, box-shadow 0.25s;
+            min-width: 0;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-7px) scale(1.03);
+            box-shadow: 0 8px 32px rgba(74,107,255,0.18);
+        }
+        
+        .tool-card-img {
+            height: 90px;
+            background: linear-gradient(135deg, #e0e7ff 0%, #f5f7ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #4a6bff;
+            border-radius: 0 0 2rem 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tool-card-content {
+            padding: 1.1rem 1.2rem 1.5rem 1.2rem;
+        }
+        
+        .tool-card-content h3 {
+            margin-bottom: 0.3rem;
+            color: #222;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        
+        .tool-card-content p {
+            color: #6c757d;
+            margin-bottom: 1.1rem;
+            font-size: 0.93rem;
+        }
+        
+        .btn {
+            border-radius: 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.7rem 1.5rem;
+            background: linear-gradient(90deg, #4a6bff 0%, #6dd5ed 100%);
+            color: #fff;
+            border: none;
+            box-shadow: 0 2px 8px rgba(74,107,255,0.10);
+        }
+        
+        .btn:hover {
+            background: linear-gradient(90deg, #6dd5ed 0%, #4a6bff 100%);
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        /* Features Section */
+        .features-section {
+            padding: 3rem 0;
+            background-color: white;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-item {
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-item h3 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .feature-item p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(120deg, #232946 0%, #4a6bff 100%);
+            color: #fff;
+            padding: 3.5rem 0 2rem;
+            margin-top: 3rem;
+            border-radius: 2rem 2rem 0 0;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-column a {
+            color: #b8c1ec;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: #6dd5ed;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #b8c1ec;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <span class="logo-icon">🧙‍♂️</span>
+                <span>FileMagic</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#image-tools">Image Tools</a></li>
+                    <li><a href="#pdf-tools">PDF Tools</a></li>
+                    <li><a href="#video-tools">Video Tools</a></li>
+                    <li><a href="#features">Features</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="container">
+        <section class="hero">
+            <h1>Convert & Compress Files in Seconds</h1>
+            <p>Free online tools for all your file conversion and compression needs. No registration required, all processing done in your browser.</p>
+            <a href="#image-tools" class="cta-btn">Get Started</a>
+        </section>
+        
+        <!-- Image Tools Section -->
+        <section class="tools-section" id="image-tools">
+            <div class="section-title">
+                <h2>Image Tools</h2>
+                <p>Compress, convert and optimize your images</p>
+            </div>
+            
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-card-img">
+                        🖼️
+                    </div>
+                    <div class="tool-card-content">
+                        <h3>Image Compressor</h3>
+                        <p>Reduce image file size by up to 90% without noticeable quality loss. Supports JPG, PNG, and WebP formats.</p>
+                        <a href="img.html" class="btn btn-block">Compress Now</a>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-card-img">
+                        🔄
+                    </div>
+                    <div class="tool-card-content">
+                        <h3>Image Converter</h3>
+                        <p>Convert between JPG, PNG, WebP, GIF and more. Perfect for changing formats for web or social media.</p>
+                        <a href="tools/img-convert.html" class="btn btn-block">Convert Now</a>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-card-img">
+                        📏
+                    </div>
+                    <div class="tool-card-content">
+                        <h3>Image Resizer</h3>
+                        <p>Resize your images to exact dimensions or scale them by percentage. Bulk resize supported.</p>
+                        <a href="tools/img-resizer.html" class="btn btn-block">Resize Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- PDF Tools Section -->
+        <section class="tools-section" id="pdf-tools">
+            <div class="section-title">
+                <h2>PDF Tools</h2>
+                <p>Convert, compress and edit PDF documents</p>
+            </div>
+            
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-card-img">
+                        📄
+                    </div>
+                    <div class="tool-card-content">
+                        <h3>PDF to Word</h3>
+                        <p>Convert PDF files to editable Word documents while preserving formatting and layout.</p>
+                        <a href="pdf-to-word.html" class="btn btn-block">Convert Now</a>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-card-img">
+                        📊
+                    </div>
+                    <div class="tool-card-content">
+                        <h3>PDF to Excel</h3>
+                        <p>Extract tables from PDFs into editable Excel spreadsheets with high accuracy.</p>
+                        <a href="pdf-to-excel.html" class="btn btn-block">Convert Now</a>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-card-img">
+                        🖨️
+                    </div>
+                    <div class="tool-card-content">
+                        <h3>PDF Compressor</h3>
+                        <p>Reduce PDF file size without losing quality. Perfect for email attachments and web uploads.</p>
+                        <a href="pdf-compressor.html" class="btn btn-block">Compress Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Video Tools Section -->
+        <section class="tools-section" id="video-tools">
+            <div class="section-title">
+                <h2>Video Tools</h2>
+                <p>Compress and convert video files</p>
+            </div>
+            
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-card-img">
+                        🎥
+                    </div>
+                    <div class="tool-card-content">
+                        <h3>Video Compressor</h3>
+                        <p>Reduce video file size while maintaining quality. Supports MP4, MOV, AVI and more.</p>
+                        <a href="video-compressor.html" class="btn btn-block">Compress Now</a>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-card-img">
+                        🎞️
+                    </div>
+                    <div class="tool-card-content">
+                        <h3>Video Converter</h3>
+                        <p>Convert between video formats like MP4, MOV, AVI, MKV, and more.</p>
+                        <a href="video-converter.html" class="btn btn-block">Convert Now</a>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-card-img">
+                        ✂️
+                    </div>
+                    <div class="tool-card-content">
+                        <h3>Video Trimmer</h3>
+                        <p>Cut and trim your videos online. Remove unwanted parts without quality loss.</p>
+                        <a href="video-trimmer.html" class="btn btn-block">Trim Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Features Section -->
+        <section class="features-section" id="features">
+            <div class="section-title">
+                <h2>Why Choose FileMagic?</h2>
+                <p>Powerful features that make file conversion simple</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Secure Processing</h3>
+                    <p>All files are processed in your browser. Nothing is uploaded to our servers, ensuring complete privacy.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Fast Conversion</h3>
+                    <p>Our tools use advanced algorithms to process files quickly without compromising quality.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">💯</div>
+                    <h3>High Quality</h3>
+                    <p>Maintain excellent quality while reducing file sizes or converting between formats.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">🆓</div>
+                    <h3>100% Free</h3>
+                    <p>All our tools are completely free to use with no hidden charges or watermarks.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h3>FileMagic</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Image Tools</h3>
+                    <ul>
+                        <li><a href="image-compressor.html">Image Compressor</a></li>
+                        <li><a href="image-converter.html">Image Converter</a></li>
+                        <li><a href="image-resizer.html">Image Resizer</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>PDF Tools</h3>
+                    <ul>
+                        <li><a href="pdf-to-word.html">PDF to Word</a></li>
+                        <li><a href="pdf-to-excel.html">PDF to Excel</a></li>
+                        <li><a href="pdf-compressor.html">PDF Compressor</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Video Tools</h3>
+                    <ul>
+                        <li><a href="video-compressor.html">Video Compressor</a></li>
+                        <li><a href="video-converter.html">Video Converter</a></li>
+                        <li><a href="video-trimmer.html">Video Trimmer</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 FileMagic. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // You can add more JavaScript functionality here as needed
+        // For example, to handle form submissions or other interactive elements
+    </script>
+</body>
+</html>
